@@ -2,41 +2,35 @@
 #############################################################################################################
 
 I. GOAL
-  ------
 
   Determine the top 10 most common source IP addresses, and their hit rates, for a fleet of 1000 web servers 
   within the last hour.
+  
   The following assumptions may be used...
   * web servers are locally writing access logs in the Apache Combined Log Format 
     (http://httpd.apache.org/docs/current/logs.html#combined).
   * web servers are accessible by ssh.
 
 II. USAGE
-    -----
 
   Run the program with the following general usage:
 
-  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-  @											@
-  @ Syntax: find_common_ips <path to server list file> [options]			@
-  @											@
-  @ positional arguments:								@
-  @ server_list           Path to the text file containing list of servers		@
-  @											@
-  @ optional arguments:									@
-  @   -h, --help            show this help message and exit				@
-  @   -N N                  Outputs N number of most common IP Addresses (Default:	@
-  @                         10								@
-  @   -L LOGPATH, --logpath LOGPATH							@
-  @                         Change the log file location on server, common for all	@
-  @                         (Default: /var/log/httpd-access-log)			@
-  @   -T TIMEDIFF, --timediff TIMEDIFF							@
-  @                         Change the time difference when looking for common		@
-  @                         IPs, in hours (Default: 1 hour)			        @
-  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    Syntax: find_common_ips.py < path to server list file > [options]
+  
+    positional arguments:
+      server_list		Path to the text file containing list of servers
 
+    optional arguments:
+      -h, --help		show this help message and exit
+      -N N		Outputs N number of most common IP Addresses (Default: 10)
+      -L LOGPATH, --logpath LOGPATH
+      			Change the log file location on server, common for all
+      			(Default: /var/log/httpd-access-log)
+      -T TIMEDIFF, --timediff TIMEDIFF
+      			Change the time difference when looking for common
+      			IPs, in hours (Default: 1 hour)
+                          
 III. DEPENDENCIES
-     ------------
 
   The program needs the following dependencies to function properly:
 
@@ -52,18 +46,17 @@ III. DEPENDENCIES
     can be uncommented after adding a valid host key, and this will allow the code to accept hostnames.
 
 IV. SOLUTION
-    --------
 
-  The program opens the server_list text file and operates on one server at a time (can be multi-threaded).
+  * The program opens the server_list text file and operates on one server at a time (can be multi-threaded).
   It connects to the server via SSH and reads the contents of the log file that is saved locally on the 
   server. 
   
-  It parses the log file, one line at a time, and returns information like IP Address, Time, and Status
+  * It parses the log file, one line at a time, and returns information like IP Address, Time, and Status
   Code. It checks the timestamp and moves ahead only if the time difference is acceptable (default 1 hour).
   
-  After finishing looking up log files on all the servers (can be more than 1000), it sorts the IPs that were
+  * After finishing looking up log files on all the servers (can be more than 1000), it sorts the IPs that were
   stored in a dictionary with their counts. The last element has the highest occurrence.
 
-  It then prints the IPs and their hit rates before exiting.
+  * It then prints the IPs and their hit rates before exiting.
 
 
