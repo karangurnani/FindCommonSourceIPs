@@ -84,8 +84,6 @@ def main():
                     ip_dict[ip_address] += 1
                     if status_code == "200":
                         hit_success[ip_address] += 1
-                else:
-                    break
 
     # An ascending list of IP address occurrences
     ip_list = sorted(list(ip_dict.items()), key=operator.itemgetter(1))
